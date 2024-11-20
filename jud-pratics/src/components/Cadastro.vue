@@ -1,0 +1,83 @@
+<!-- eslint-disable vue/multi-word-component-names -->
+<template>
+  <v-container>
+    <v-row class="justify-center">
+      <v-col cols="12" md="6">
+        <v-card>
+          <v-card-title class="headline">Cadastro</v-card-title>
+          <v-card-text>
+            <v-form v-model="valid" ref="form">
+              <v-text-field
+                v-model="email"
+                label="E-mail"
+                type="email"
+                :rules="emailRules"
+                required
+              />
+              <v-text-field
+                v-model="password"
+                label="Senha"
+                type="password"
+                :rules="passwordRules"
+                required
+              />
+              <v-text-field
+                v-model="confirmPassword"
+                label="Confirmar Senha"
+                type="password"
+                :rules="confirmPasswordRules"
+                required
+              />
+              <v-btn :disabled="!valid" color="primary" @click="submitRegister">
+                Cadastrar
+              </v-btn>
+              <!-- Botão de redirecionamento para o Login -->
+              <v-btn text @click="goToLogin">
+                Já tem uma conta? Faça login
+              </v-btn>
+            </v-form>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      email: '',
+      password: '',
+      confirmPassword: '',
+      valid: false,
+      emailRules: [
+        v => !!v || 'E-mail é obrigatório',
+        v => /.+@.+\..+/.test(v) || 'E-mail deve ser válido'
+      ],
+      passwordRules: [
+        v => !!v || 'Senha é obrigatória',
+        v => v.length >= 6 || 'A senha deve ter pelo menos 6 caracteres'
+      ],
+      confirmPasswordRules: [
+        v => v === this.password || 'As senhas não coincidem'
+      ]
+    };
+  },
+  methods: {
+    submitRegister() {
+      // Lógica de cadastro (backend integration)
+      console.log('Cadastro com e-mail:', this.email);
+      this.$router.push('/home');
+    },
+    goToLogin() {
+      // Redireciona para a página de login
+      this.$router.push('/login');
+    }
+  }
+};
+</script>
+
+<style scoped>
+/* Estilos personalizados */
+</style>
