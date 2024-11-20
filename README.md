@@ -17,24 +17,68 @@ Além disso, a plataforma proporciona aos advogados uma maneira prática de expa
 
 ### Frontend
 - **Framework:** Vue.js
-- **UI Framework:** Vuetify (ou outro caso utilizado)
-- **Outras Tecnologias:** [Preencher com bibliotecas ou ferramentas adicionais utilizadas, como Axios para requisições HTTP, Vuex para gerenciamento de estado, etc.]
+- **UI Framework:** Vuetify
+- **Outras Ferramentas:** Axios, Vuex
+---
+
+## Funcionalidades Gerais
+
+### Sistema de Autenticação:
+- Cadastro e login (com validação por email e senha).
+- Recuperação de senha.
+- Níveis de acesso diferenciados para usuários e advogados.
+
+### Gerenciamento de Perfil:
+- Edição de informações pessoais e profissionais.
+- Upload de documentos (ex.: OAB, CNH, comprovantes de residência).
 
 ---
 
-## Funcionalidades
+## Para Usuários
 
-### Para Usuários:
-- Cadastro e login de usuários.
-- Criação de casos jurídicos para serem analisados por advogados.
-- Acompanhamento do status dos casos postados.
-- Comunicação direta com advogados interessados.
+### Cadastro de Casos Jurídicos:
+- **Criação de casos** com:
+  - Descrição detalhada.
+  - Categoria (ex.: trabalhista, cível, penal).
+  - Urgência (baixa, média, alta).
+  - Orçamento sugerido.
+  - Upload de arquivos complementares (ex.: provas, documentos).
+  
+### Consulta e Acompanhamento:
+- Visualização de casos postados e status:
+  - Pendente, em análise, aceito, concluído.
+- Notificações de interações:
+  - Ex.: advogado aceitou o caso, mensagem recebida.
 
-### Para Advogados:
-- Cadastro e login de advogados.
-- Acesso a uma lista de casos postados por usuários.
-- Aceitação ou rejeição de casos com base no interesse e disponibilidade.
-- Gerenciamento da carga de trabalho de forma flexível.
+### Comunicação Direta com Advogados:
+- **Chat integrado** para discutir detalhes do caso.
+- Histórico de mensagens.
+
+### Avaliação de Advogados:
+- Avaliação e feedback após conclusão do caso.
+- Sistema de notas (1 a 5) e comentários.
+
+---
+
+## Para Advogados
+
+### Gerenciamento de Perfil Profissional:
+- Cadastro de área(s) de atuação.
+- Inserção de histórico e experiência profissional.
+
+### Consulta de Casos Disponíveis:
+- Listagem de casos com filtros:
+  - Categoria, urgência, localização.
+- Visualização detalhada dos casos.
+
+### Gestão de Casos:
+- Aceitação/rejeição de casos.
+- Gerenciamento de casos aceitos com status:
+  - Em andamento, concluído.
+
+### Relatórios e Feedbacks:
+- Acesso a relatórios de casos finalizados.
+- Histórico de avaliações recebidas.
 
 ---
 
