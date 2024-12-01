@@ -48,14 +48,6 @@ public class User {
     @Lob
     private String pictureURL;
 
-
-    public User(String name, LocalDate birthDate, String cpf, String email, String address, String phone, Role role) {
-        this.name = name;
-        this.birthDate = birthDate;
-        this.cpf = cpf;
-        this.email = email;
-        this.address = address;
-        this.phone = phone;
-        this.role = role;
-    }
+    @NotNull(message="status cannot be null")
+    private Boolean isAccountActive;
 }

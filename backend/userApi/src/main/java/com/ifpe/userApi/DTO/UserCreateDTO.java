@@ -12,6 +12,7 @@ public record UserCreateDTO(
         @NotBlank(message = "Phone cannot be blank") @Pattern(regexp = "^(\\+\\d{1,3}[- ]?)?\\d{10}$", message = "Invalid phone number") String phone,
         @NotBlank @Email(message = "Invalid email format") String email,
         @NotNull(message = "pictureURL cannot be null") @Lob String pictureURL,
-        @NotNull(message = "User role cannot be null") Role role
+        @NotNull(message = "User role cannot be null") Role role,
+        @NotNull(message = "User status cannot be null") Boolean isAccountActive
 ) {
 }

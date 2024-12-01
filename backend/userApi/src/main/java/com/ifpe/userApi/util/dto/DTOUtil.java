@@ -6,6 +6,7 @@ import com.ifpe.userApi.entities.User;
 import com.ifpe.userApi.exceptions.DecryptionException;
 import com.ifpe.userApi.exceptions.EncryptionException;
 import com.ifpe.userApi.exceptions.InvalidDateFormatException;
+import com.ifpe.userApi.exceptions.UserCreationException;
 import com.ifpe.userApi.util.encrypt.EncryptUtil;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +18,7 @@ import java.time.format.DateTimeParseException;
 @UtilityClass
 public class DTOUtil {
 
-    public static String encryptId(Long id) throws EncryptionException {
+    public String encryptId(Long id) throws EncryptionException {
         try {
             log.info("DTOUtil :: encryptId :: Starting encryption of ID: {}", id);
             return EncryptUtil.encrypt(id.toString());
@@ -27,7 +28,7 @@ public class DTOUtil {
         }
     }
 
-    public static Long decryptId(String encryptedId) throws DecryptionException {
+    public Long decryptId(String encryptedId) throws DecryptionException {
         try {
             log.info("DTOUtil :: decryptId :: Starting decryption of ID: {}", encryptedId);
             return Long.parseLong(EncryptUtil.decrypt(encryptedId));
@@ -37,7 +38,7 @@ public class DTOUtil {
         }
     }
 
-    public static UserResponseDTO convertToUserResponseDTO(User user) throws EncryptionException {
+    public UserResponseDTO convertToUserResponseDTO(User user) throws EncryptionException {
         log.info("DTOUtil :: convertToUserResponseDTO :: Converting User to UserResponseDTO with encrypted ID.");
         String encryptedId = encryptId(user.getId());
 
@@ -49,11 +50,13 @@ public class DTOUtil {
                 user.getEmail(),
                 user.getAddress(),
                 user.getPhone(),
-                user.getPictureURL()
+                user.getPictureURL(),
+                user.getRole().getRole(),
+                user.getIsAccountActive()
         );
     }
 
-    public static User userCreateDTOToUser(UserCreateDTO userCreateDTO) {
+    public User userCreateDTOToUser(UserCreateDTO userCreateDTO) {
         log.info("DTOUtil :: userCreateDTOToUser :: Converting UserCreateDTO to User.");
 
         // Simple validation for mandatory fields
@@ -77,7 +80,31 @@ public class DTOUtil {
         user.setEmail(userCreateDTO.email());
         user.setPictureURL(userCreateDTO.pictureURL());
         user.setRole(userCreateDTO.role());
+        user.setIsAccountActive(true);
 
         return user;
     }
+
+    public void  validateUserCreateDTO(UserCreateDTO data) {
+        if (data.name() == null || data.name().isEmpty()) {
+            log.error("DTOUtil :: validateUserCreateDTO :: Name cannot be empty.");
+            throw new UserCreationException("Name cannot be empty.");
+        }
+
+        if (data.birthDate() == null || data.birthDate().isBlank()) {
+            log.error("DTOUtil :: validateUserCreateDTO :: Birth date cannot be empty.");
+            throw new UserCreationException("Birth date cannot be empty.");
+        }
+
+        if (data.cpf() == null || data.cpf().isBlank()) {
+            log.error("DTOUtil :: validateUserCreateDTO :: CPF cannot be empty.");
+            throw new UserCreationException("CPF cannot be empty.");
+        }
+
+        if (data.email() == null || data.email().isBlank()) {
+            log.error("DTOUtil :: validateUserCreateDTO :: Email cannot be empty.");
+            throw new UserCreationException("Email cannot be empty.");
+        }
+    }
+
 }
