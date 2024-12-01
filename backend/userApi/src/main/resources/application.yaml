@@ -1,0 +1,7 @@
+logging:
+  file:
+    name: target/logs
+    max-size: 10MB
+    max-history: 30
+  level:
+    root: INFO
