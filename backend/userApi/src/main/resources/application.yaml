@@ -12,6 +12,8 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
     format-sql: true
+  mvc:
+    static-path-pattern: /documentation/swagger-ui/**
 
 server:
   port: 8080
