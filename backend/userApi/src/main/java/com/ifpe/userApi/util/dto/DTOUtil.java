@@ -45,43 +45,24 @@ public class DTOUtil {
         return new UserResponseDTO(
                 encryptedId,
                 user.getName(),
-                user.getBirthDate(),
-                user.getCpf(),
                 user.getEmail(),
+                user.getBirthDate(),
                 user.getAddress(),
-                user.getPhone(),
-                user.getPictureURL(),
-                user.getRole().getRole(),
-                user.getIsAccountActive()
+                user.getPhone()
         );
     }
 
-    public User userCreateDTOToUser(UserCreateDTO userCreateDTO) {
-        log.info("DTOUtil :: userCreateDTOToUser :: Converting UserCreateDTO to User.");
-
-        // Simple validation for mandatory fields
-        if (userCreateDTO.name() == null || userCreateDTO.name().isEmpty()) {
-            log.error("DTOUtil :: userCreateDTOToUser :: Name cannot be empty.");
-            throw new IllegalArgumentException("Name cannot be empty.");
-        }
-
+    public static User userCreateDTOToUser(UserCreateDTO dto) {
         User user = new User();
-        user.setName(userCreateDTO.name());
-        try {
-            user.setBirthDate(LocalDate.parse(userCreateDTO.birthDate()));
-        } catch (DateTimeParseException e) {
-            log.error("DTOUtil :: userCreateDTOToUser :: Invalid date format: {}", userCreateDTO.birthDate(), e);
-            throw new InvalidDateFormatException("Invalid date format", e);
-        }
-
-        user.setCpf(userCreateDTO.cpf());
-        user.setAddress(userCreateDTO.address());
-        user.setPhone(userCreateDTO.phone());
-        user.setEmail(userCreateDTO.email());
-        user.setPictureURL(userCreateDTO.pictureURL());
-        user.setRole(userCreateDTO.role());
+        user.setName(dto.name());
+        user.setBirthDate(LocalDate.parse(dto.birthDate()));
+        user.setCpf(dto.cpf());
+        user.setEmail(dto.email());
+        user.setPhone(dto.phone());
+        user.setAddress(dto.address());
+        user.setRole(dto.role());
+        user.setPictureURL(dto.pictureURL());
         user.setIsAccountActive(true);
-
         return user;
     }
 

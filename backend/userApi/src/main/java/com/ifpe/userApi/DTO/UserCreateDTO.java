@@ -13,6 +13,6 @@ public record UserCreateDTO(
         @NotBlank @Email(message = "Invalid email format") String email,
         @NotNull(message = "pictureURL cannot be null") @Lob String pictureURL,
         @NotNull(message = "User role cannot be null") Role role,
-        @NotNull(message = "User status cannot be null") Boolean isAccountActive
+        @NotNull(message = "User password cannot be null") String password
 ) {
 }

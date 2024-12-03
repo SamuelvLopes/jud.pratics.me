@@ -58,4 +58,12 @@ public class UserController {
         log.info("UserController :: changeUserStatus :: User status changed successfully. ID: {}", id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/status/{id}")
+    public ResponseEntity<Boolean> accountStatus(@PathVariable String id){
+        log.info("UserController :: accountStatus :: searching account status for user with ID: {}",id);
+        Boolean status = userService.accountStatus(id);
+        log.info("UserController :: accountStatus :: user status sucessfully searched. Status: {}",status);
+        return ResponseEntity.ok().body(status);
+    }
 }

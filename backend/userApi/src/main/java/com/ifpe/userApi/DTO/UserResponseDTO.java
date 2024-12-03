@@ -5,13 +5,9 @@ import java.time.LocalDate;
 public record UserResponseDTO(
         String id,
         String name,
-        LocalDate birthDate,
-        String cpf,
         String email,
+        LocalDate birthDate,
         String address,
-        String phone,
-        String pictureURL,
-        String role,
-        Boolean active
+        String phone
 ) {
 }

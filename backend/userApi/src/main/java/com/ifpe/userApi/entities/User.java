@@ -14,6 +14,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,7 +24,7 @@ public class User {
 
     @NotNull(message = "BirthDate cannot be null")
     @Past(message = "BirthDate must be in the past")
-    private LocalDate birthDate;  // Usando LocalDate em vez de String para representar datas
+    private LocalDate birthDate;
 
     @NotBlank(message = "CPF cannot be blank")
     @Pattern(regexp = "^[0-9]{11}$", message = "CPF must contain 11 digits")
@@ -42,12 +43,17 @@ public class User {
     private String phone;
 
     @Enumerated(EnumType.STRING)
+    @NotNull(message = "Role cannot be null")
     private Role role;
 
-    @NotNull(message="pictureURL cannot be null")
     @Lob
+    @NotNull(message = "pictureURL cannot be null")
     private String pictureURL;
 
-    @NotNull(message="status cannot be null")
+    @NotNull(message = "Status cannot be null")
     private Boolean isAccountActive;
+
+    @NotBlank(message = "Password cannot be null")
+    @Size(min = 8, max = 12, message = "Password must be between 8 and 12 characters")
+    private String password;
 }
