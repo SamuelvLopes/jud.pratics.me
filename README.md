@@ -1,5 +1,5 @@
 # JUD Pratics
-## Estado da arte
+## Query
 ### Português
 ```
 ("plataforma de serviços jurídicos" OR "serviços jurídicos digitais" OR "comunicação advogado-cliente" OR "mercado jurídico online" OR "gerenciamento de casos" OR "sistema de aconselhamento jurídico" OR "interação usuário-advogado" OR "aplicação baseada na web" OR "tecnologia no campo jurídico" OR "avaliação" OR "feedback" OR "qualidade do serviço" OR "pro bono")
