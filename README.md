@@ -1,11 +1,13 @@
 # JUD Pratics
 ## Estado da arte
 ### Query em Português
+```
 ("plataforma de serviços jurídicos" OR "serviços jurídicos digitais" OR "comunicação advogado-cliente" OR "mercado jurídico online" OR "gerenciamento de casos" OR "sistema de aconselhamento jurídico" OR "interação usuário-advogado" OR "aplicação baseada na web" OR "tecnologia no campo jurídico" OR "avaliação" OR "feedback" OR "qualidade do serviço" OR "pro bono")
-
+```
 ### Query em Inglês
+```
 ("legal services platform" OR "digital legal services" OR "lawyer-client communication" OR "online legal marketplace" OR "case management" OR "legal advice system" OR "user-lawyer interaction" OR "web-based application" OR "technology in legal field" OR "evaluation" OR "feedback" OR "service quality" OR "pro bono")
-
+```
 ### Query em Espanhol
 ("plataforma de servicios legales" OR "servicios legales digitales" OR "comunicación abogado-cliente" OR "mercado legal en línea" OR "gestión de casos" OR "sistema de asesoramiento legal" OR "interacción usuario-abogado" OR "aplicación basada en la web" OR "tecnología en el campo legal" OR "evaluación" OR "retroalimentación" OR "calidad del servicio" OR "pro bono")
 
