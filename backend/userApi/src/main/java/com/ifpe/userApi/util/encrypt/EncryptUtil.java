@@ -25,4 +25,3 @@ public class EncryptUtil {
         return new String(decryptedBytes);
     }
 }
-

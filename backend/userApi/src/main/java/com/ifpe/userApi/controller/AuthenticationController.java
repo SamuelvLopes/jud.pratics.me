@@ -22,13 +22,13 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity<String> authenticate(Authentication authentication) {
-        log.info( "AuthenticationController :: login :: Request to authenticate user: " + authentication.getName());
+        log.info("AuthenticationController :: login :: Request to authenticate user: {}", authentication.getName());
         try {
             String response = authenticationService.authenticate(authentication);
-            log.info( "AuthenticationController :: login ::ser authenticated successfully: " + authentication.getName());
+            log.info("AuthenticationController :: login ::ser authenticated successfully: {}", authentication.getName());
             return ResponseEntity.ok(response);
         } catch (RuntimeException e) {
-            log.error( "AuthenticationController :: login :: authentication failed for user: " + authentication.getName() + ". Error: " + e.getMessage());
+            log.error("AuthenticationController :: login :: authentication failed for user: {}. Error: {}", authentication.getName(), e.getMessage());
             return ResponseEntity.status(401).body("Authentication failed.");
         }
     }

@@ -32,7 +32,7 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<UserResponseDTO> getUserById(@PathVariable String id) {
         log.info("UserController :: getUserById :: Received request to fetch user by ID: {}", id);
-        return userService.findById(id);
+        return userService.findByUniqueToken(id);
     }
 
     @PutMapping

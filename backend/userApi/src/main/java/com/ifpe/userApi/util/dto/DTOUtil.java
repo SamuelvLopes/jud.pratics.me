@@ -5,33 +5,32 @@ import com.ifpe.userApi.DTO.UserResponseDTO;
 import com.ifpe.userApi.entities.User;
 import com.ifpe.userApi.exceptions.DecryptionException;
 import com.ifpe.userApi.exceptions.EncryptionException;
-import com.ifpe.userApi.exceptions.InvalidDateFormatException;
 import com.ifpe.userApi.exceptions.UserCreationException;
 import com.ifpe.userApi.util.encrypt.EncryptUtil;
+import com.ifpe.userApi.util.entities.UserUtils;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 
 @Slf4j
 @UtilityClass
 public class DTOUtil {
 
-    public String encryptId(Long id) throws EncryptionException {
+    public  String encryptUniqueToken(String id) throws EncryptionException {
         try {
             log.info("DTOUtil :: encryptId :: Starting encryption of ID: {}", id);
-            return EncryptUtil.encrypt(id.toString());
+            return EncryptUtil.encrypt(id);
         } catch (Exception e) {
             log.error("DTOUtil :: encryptId :: Error encrypting ID: {}", id, e);
             throw new EncryptionException("Error encrypting ID", e);
         }
     }
 
-    public Long decryptId(String encryptedId) throws DecryptionException {
+    public  String decryptIdUniqueToken(String encryptedId) throws DecryptionException {
         try {
             log.info("DTOUtil :: decryptId :: Starting decryption of ID: {}", encryptedId);
-            return Long.parseLong(EncryptUtil.decrypt(encryptedId));
+            return EncryptUtil.decrypt(encryptedId);
         } catch (Exception e) {
             log.error("DTOUtil :: decryptId :: Error decrypting ID: {}", encryptedId, e);
             throw new DecryptionException("Error decrypting ID", e);
@@ -40,10 +39,10 @@ public class DTOUtil {
 
     public UserResponseDTO convertToUserResponseDTO(User user) throws EncryptionException {
         log.info("DTOUtil :: convertToUserResponseDTO :: Converting User to UserResponseDTO with encrypted ID.");
-        String encryptedId = encryptId(user.getId());
+        String encryptedUniqueToken = encryptUniqueToken(user.getUniqueToken());
 
         return new UserResponseDTO(
-                encryptedId,
+                encryptedUniqueToken,
                 user.getName(),
                 user.getEmail(),
                 user.getBirthDate(),
@@ -52,21 +51,28 @@ public class DTOUtil {
         );
     }
 
-    public static User userCreateDTOToUser(UserCreateDTO dto) {
-        User user = new User();
-        user.setName(dto.name());
-        user.setBirthDate(LocalDate.parse(dto.birthDate()));
-        user.setCpf(dto.cpf());
-        user.setEmail(dto.email());
-        user.setPhone(dto.phone());
-        user.setAddress(dto.address());
-        user.setRole(dto.role());
-        user.setPictureURL(dto.pictureURL());
-        user.setIsAccountActive(true);
-        return user;
+    public User userCreateDTOToUser(UserCreateDTO dto) throws Exception {
+         LocalDate birthDate = LocalDate.parse(dto.birthDate());
+
+        return User.builder()
+               .name(dto.name())
+               .birthDate(birthDate)
+               .cpf(dto.cpf())
+               .email(dto.email())
+               .address(dto.address())
+               .phone(dto.phone())
+               .role(dto.role())
+               .pictureURL(dto.pictureURL())
+               .isAccountActive(true)
+               .uniqueToken(UserUtils.generateUniqueUserToken(
+                       dto.name(),
+                       dto.cpf(),
+                       dto.email()
+               ))
+               .build();
     }
 
-    public void  validateUserCreateDTO(UserCreateDTO data) {
+    public void validateUserCreateDTO(UserCreateDTO data) {
         if (data.name() == null || data.name().isEmpty()) {
             log.error("DTOUtil :: validateUserCreateDTO :: Name cannot be empty.");
             throw new UserCreationException("Name cannot be empty.");
@@ -87,5 +93,4 @@ public class DTOUtil {
             throw new UserCreationException("Email cannot be empty.");
         }
     }
-
 }

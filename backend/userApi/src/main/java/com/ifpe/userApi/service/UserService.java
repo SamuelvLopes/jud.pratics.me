@@ -36,22 +36,24 @@ public class UserService {
         log.info("UserService :: create :: Starting user creation process...");
 
         validateCreateDTO(data);
-        User user = DTOUtil.userCreateDTOToUser(data);
-        user.setPassword(passwordEncoder.encode(data.password()));
-        log.info("UserService :: create :: User entity created.");
-
+        User user;
         try {
+            user = DTOUtil.userCreateDTOToUser(data);
+            user.setPassword(passwordEncoder.encode(data.password()));
+            log.info("UserService :: create :: User entity created.");
             user = userRepository.save(user);
             log.info("UserService :: create :: User successfully saved. ID: {}", user.getId());
         } catch (DataIntegrityViolationException e) {
             log.error("UserService :: create :: CPF or Email already exists. DTO: {}", data, e);
             throw new UserCreationException("CPF or Email already exists!", e);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(DTOUtil.encryptId(user.getId()))
+                .buildAndExpand(DTOUtil.encryptUniqueToken(user.getUniqueToken()))
                 .toUri();
 
         log.info("UserService :: create :: User creation process completed. Location: {}", location);
@@ -59,13 +61,13 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public ResponseEntity<UserResponseDTO> findById(String id) {
-        log.info("UserService :: findById :: Fetching user by ID: {}", id);
+    public ResponseEntity<UserResponseDTO> findByUniqueToken(String uniqueToken) {
+        log.info("UserService :: findById :: Fetching user by uniqueToken: {}", uniqueToken);
 
-        validateId(id);
-        Long decryptedId = DTOUtil.decryptId(id);
-        User user = userRepository.findById(decryptedId)
-                .orElseThrow(() -> new UserNotFoundException("User not found for ID: " + id));
+        validateUniqueToken(uniqueToken);
+        String decryptedId = DTOUtil.decryptIdUniqueToken(uniqueToken);
+        User user = userRepository.findByUniqueToken(decryptedId)
+                .orElseThrow(() -> new UserNotFoundException("User not found for uniqueToken: " + uniqueToken));
 
         return ResponseEntity.ok(DTOUtil.convertToUserResponseDTO(user));
     }
@@ -74,9 +76,9 @@ public class UserService {
     public void updateClient(UserUpdateRequestDTO data) {
         log.info("UserService :: updateClient :: Updating user with ID: {}", data.id());
 
-        validateId(data.id());
-        Long decryptedId = DTOUtil.decryptId(data.id());
-        User user = userRepository.findById(decryptedId)
+        validateUniqueToken(data.id());
+        String decryptedIdUniqueToken= DTOUtil.decryptIdUniqueToken(data.id());
+        User user = userRepository.findByUniqueToken(decryptedIdUniqueToken)
                 .orElseThrow(() -> new UserNotFoundException("User not found for ID: " + data.id()));
 
         if (data.name() != null && !data.name().isBlank() && !data.name().equals(user.getName())) {
@@ -100,12 +102,12 @@ public class UserService {
     public void deleteById(String encryptedID) {
         log.info("UserService :: deleteById :: Deleting user with ID: {}", encryptedID);
 
-        validateId(encryptedID);
-        Long decryptedId = DTOUtil.decryptId(encryptedID);
-        userRepository.findById(decryptedId)
+        validateUniqueToken(encryptedID);
+        String decryptedId = DTOUtil.decryptIdUniqueToken(encryptedID);
+        User user = userRepository.findByUniqueToken(decryptedId)
                 .orElseThrow(() -> new UserNotFoundException("User not found for ID: " + encryptedID));
 
-        userRepository.deleteById(decryptedId);
+        userRepository.delete(user);
         log.info("UserService :: deleteById :: User successfully deleted. ID: {}", encryptedID);
     }
 
@@ -113,9 +115,9 @@ public class UserService {
     public void changeStatus(String encryptedID) {
         log.info("UserService :: changeStatus :: Changing status of user with ID: {}", encryptedID);
 
-        validateId(encryptedID);
-        Long decryptedId = DTOUtil.decryptId(encryptedID);
-        User user = userRepository.findById(decryptedId)
+        validateUniqueToken(encryptedID);
+        String decryptedId = DTOUtil.decryptIdUniqueToken(encryptedID);
+        User user = userRepository.findByUniqueToken(decryptedId)
                 .orElseThrow(() -> new UserNotFoundException("User not found for ID: " + encryptedID));
 
         user.setIsAccountActive(!user.getIsAccountActive());
@@ -127,9 +129,9 @@ public class UserService {
     @Transactional(readOnly = true)
     public Boolean accountStatus(String encryptedID) {
         log.info("UserService :: accountStatus :: Searching status of user with ID: {}", encryptedID);
-        validateId(encryptedID);
-        Long decryptedId = DTOUtil.decryptId(encryptedID);
-        User user = userRepository.findById(decryptedId)
+        validateUniqueToken(encryptedID);
+        String decryptedId = DTOUtil.decryptIdUniqueToken(encryptedID);
+        User user = userRepository.findByUniqueToken(decryptedId)
                 .orElseThrow(() -> new UserNotFoundException("User not found for ID: " + encryptedID));
         log.info("UserService :: accountStatus :: User status successfully searched. status: {}", user.getIsAccountActive());
 
@@ -147,9 +149,9 @@ public class UserService {
         DTOUtil.validateUserCreateDTO(data);
     }
 
-    private void validateId(String id) {
+    private void validateUniqueToken(String id) {
         if (id == null || id.isBlank()) {
-            throw new IllegalArgumentException("ID cannot be null or blank.");
+            throw new IllegalArgumentException("uniqueToken cannot be null or blank.");
         }
     }
 
