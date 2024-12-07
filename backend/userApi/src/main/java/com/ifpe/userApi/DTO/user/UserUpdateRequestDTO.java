@@ -1,4 +1,4 @@
-package com.ifpe.userApi.DTO;
+package com.ifpe.userApi.DTO.user;
 
 import java.time.LocalDate;
 

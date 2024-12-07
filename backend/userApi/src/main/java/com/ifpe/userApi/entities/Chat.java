@@ -3,6 +3,7 @@ package com.ifpe.userApi.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
@@ -11,6 +12,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Chat {
 
     @Id
@@ -26,5 +28,7 @@ public class Chat {
     @OneToMany(mappedBy = "chat", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Message> messages;
 
-}
+    @Column(nullable = false, updatable = false)
+    private LocalDate creationDate;
 
+}

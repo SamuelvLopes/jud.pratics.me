@@ -1,8 +1,8 @@
 package com.ifpe.userApi.controller;
 
-import com.ifpe.userApi.DTO.UserCreateDTO;
-import com.ifpe.userApi.DTO.UserResponseDTO;
-import com.ifpe.userApi.DTO.UserUpdateRequestDTO;
+import com.ifpe.userApi.DTO.user.UserCreateDTO;
+import com.ifpe.userApi.DTO.user.UserResponseDTO;
+import com.ifpe.userApi.DTO.user.UserUpdateRequestDTO;
 import com.ifpe.userApi.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

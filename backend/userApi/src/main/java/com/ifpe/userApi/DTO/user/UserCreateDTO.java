@@ -1,4 +1,4 @@
-package com.ifpe.userApi.DTO;
+package com.ifpe.userApi.DTO.user;
 
 import com.ifpe.userApi.util.enums.Role;
 import jakarta.persistence.Lob;

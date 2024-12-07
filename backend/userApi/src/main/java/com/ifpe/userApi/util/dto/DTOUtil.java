@@ -1,8 +1,10 @@
 package com.ifpe.userApi.util.dto;
 
-import com.ifpe.userApi.DTO.UserCreateDTO;
-import com.ifpe.userApi.DTO.UserResponseDTO;
+import com.ifpe.userApi.DTO.chat.ChatCreateDTO;
+import com.ifpe.userApi.DTO.user.UserCreateDTO;
+import com.ifpe.userApi.DTO.user.UserResponseDTO;
 import com.ifpe.userApi.entities.User;
+import com.ifpe.userApi.exceptions.ChatCreationException;
 import com.ifpe.userApi.exceptions.DecryptionException;
 import com.ifpe.userApi.exceptions.EncryptionException;
 import com.ifpe.userApi.exceptions.UserCreationException;
@@ -92,5 +94,18 @@ public class DTOUtil {
             log.error("DTOUtil :: validateUserCreateDTO :: Email cannot be empty.");
             throw new UserCreationException("Email cannot be empty.");
         }
+    }
+
+    public void validateChatCreateDTO(ChatCreateDTO data) {
+        if (data == null) {
+            throw new UserCreationException("Chat data cannot be null.");
+        }
+        if (data.firstId().isBlank()) {
+            throw new ChatCreationException("Users id cannot be null");
+        }
+        if (data.secondId().isBlank()) {
+            throw new ChatCreationException("Users id cannot be null");
+        }
+
     }
 }

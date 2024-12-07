@@ -1,8 +1,8 @@
 package com.ifpe.userApi.service;
 
-import com.ifpe.userApi.DTO.UserCreateDTO;
-import com.ifpe.userApi.DTO.UserResponseDTO;
-import com.ifpe.userApi.DTO.UserUpdateRequestDTO;
+import com.ifpe.userApi.DTO.user.UserCreateDTO;
+import com.ifpe.userApi.DTO.user.UserResponseDTO;
+import com.ifpe.userApi.DTO.user.UserUpdateRequestDTO;
 import com.ifpe.userApi.entities.User;
 import com.ifpe.userApi.exceptions.UserCreationException;
 import com.ifpe.userApi.exceptions.UserNotFoundException;
@@ -35,7 +35,7 @@ public class UserService {
     public URI create(UserCreateDTO data) {
         log.info("UserService :: create :: Starting user creation process...");
 
-        validateCreateDTO(data);
+        validateUserCreateDTO(data);
         User user;
         try {
             user = DTOUtil.userCreateDTOToUser(data);
@@ -139,7 +139,7 @@ public class UserService {
 
     }
 
-    private void validateCreateDTO(UserCreateDTO data) {
+    private void validateUserCreateDTO(UserCreateDTO data) {
         if (data == null) {
             throw new UserCreationException("User data cannot be null.");
         }
@@ -162,5 +162,4 @@ public class UserService {
                 && Pattern.compile("[0-9]").matcher(password).find()
                 && Pattern.compile("[!@#$%^&*()\\-_=+{};:,<.>?]").matcher(password).find();
     }
-
 }
