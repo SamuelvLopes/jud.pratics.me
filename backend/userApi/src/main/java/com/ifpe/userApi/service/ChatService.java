@@ -20,6 +20,4 @@ public class ChatService {
         this.chatRepository = chatRepository;
     }
 
-    @Transactional
-    public
 }
