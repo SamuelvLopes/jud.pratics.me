@@ -3,12 +3,12 @@ FROM ubuntu:22.04
 
 # Define environment variables
 ENV DEBIAN_FRONTEND=noninteractive \
-    JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 \
+    JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64 \
     PATH="$JAVA_HOME/bin:$PATH"
 
 # Atualiza os pacotes e instala dependências
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    openjdk-17-jdk \
+    openjdk-21-jdk \
     maven \
     curl \
     unzip \

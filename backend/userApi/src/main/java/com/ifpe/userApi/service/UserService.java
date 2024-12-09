@@ -5,7 +5,7 @@ import com.ifpe.userApi.DTO.user.UserResponseDTO;
 import com.ifpe.userApi.DTO.user.UserUpdateRequestDTO;
 import com.ifpe.userApi.entities.User;
 import com.ifpe.userApi.exceptions.UserCreationException;
-import com.ifpe.userApi.exceptions.UserNotFoundException;
+import com.ifpe.userApi.exceptions.ResourceNotFoundException;
 import com.ifpe.userApi.repository.UserRepository;
 import com.ifpe.userApi.util.dto.DTOUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -67,7 +67,7 @@ public class UserService {
         validateUniqueToken(uniqueToken);
         String decryptedId = DTOUtil.decryptIdUniqueToken(uniqueToken);
         User user = userRepository.findByUniqueToken(decryptedId)
-                .orElseThrow(() -> new UserNotFoundException("User not found for uniqueToken: " + uniqueToken));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found for uniqueToken: " + uniqueToken));
 
         return ResponseEntity.ok(DTOUtil.convertToUserResponseDTO(user));
     }
@@ -79,7 +79,7 @@ public class UserService {
         validateUniqueToken(data.id());
         String decryptedIdUniqueToken= DTOUtil.decryptIdUniqueToken(data.id());
         User user = userRepository.findByUniqueToken(decryptedIdUniqueToken)
-                .orElseThrow(() -> new UserNotFoundException("User not found for ID: " + data.id()));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found for ID: " + data.id()));
 
         if (data.name() != null && !data.name().isBlank() && !data.name().equals(user.getName())) {
             user.setName(data.name());
@@ -105,7 +105,7 @@ public class UserService {
         validateUniqueToken(encryptedID);
         String decryptedId = DTOUtil.decryptIdUniqueToken(encryptedID);
         User user = userRepository.findByUniqueToken(decryptedId)
-                .orElseThrow(() -> new UserNotFoundException("User not found for ID: " + encryptedID));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found for ID: " + encryptedID));
 
         userRepository.delete(user);
         log.info("UserService :: deleteById :: User successfully deleted. ID: {}", encryptedID);
@@ -118,7 +118,7 @@ public class UserService {
         validateUniqueToken(encryptedID);
         String decryptedId = DTOUtil.decryptIdUniqueToken(encryptedID);
         User user = userRepository.findByUniqueToken(decryptedId)
-                .orElseThrow(() -> new UserNotFoundException("User not found for ID: " + encryptedID));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found for ID: " + encryptedID));
 
         user.setIsAccountActive(!user.getIsAccountActive());
         userRepository.save(user);
@@ -132,7 +132,7 @@ public class UserService {
         validateUniqueToken(encryptedID);
         String decryptedId = DTOUtil.decryptIdUniqueToken(encryptedID);
         User user = userRepository.findByUniqueToken(decryptedId)
-                .orElseThrow(() -> new UserNotFoundException("User not found for ID: " + encryptedID));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found for ID: " + encryptedID));
         log.info("UserService :: accountStatus :: User status successfully searched. status: {}", user.getIsAccountActive());
 
         return user.getIsAccountActive();

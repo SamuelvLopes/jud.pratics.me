@@ -6,7 +6,9 @@ import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -79,4 +81,10 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "chat_id"))
     private Set<Chat> chats = new HashSet<>();
+
+    @OneToMany(mappedBy = "author")
+    private Set<Post> posts = new HashSet<>();
+
+    @OneToMany(mappedBy = "responsible")
+    private Set<Post> responsiblePosts = new HashSet<>();
 }
